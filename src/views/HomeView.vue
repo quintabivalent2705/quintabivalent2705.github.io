@@ -119,6 +119,17 @@
             </div>
           </div>
         </div>
+        <div class="academic-visits">
+          <h3 class="exp-col-h"><span class="bar"></span>{{ t('home.academicVisits') }}</h3>
+          <div class="visit-grid">
+            <article v-for="p in academicVisits" :key="p.name" class="visit-card">
+              <div class="visit-time">{{ dateLabel(p.time) }}</div>
+              <h4>{{ lPartner(p, 'name') }}</h4>
+              <div class="visit-role">{{ partnerExperience(p).role }}</div>
+              <p v-if="partnerExperience(p).detail">{{ partnerExperience(p).detail }}</p>
+            </article>
+          </div>
+        </div>
         <div class="summary-link">
           <router-link to="/partners" class="more">{{ t('home.partners') }}</router-link>
         </div>
@@ -130,7 +141,7 @@
 <script setup>
 import { computed } from 'vue'
 import { D, dirName, resultCounts, isFormalResult, localizedStatusMeta, timeShort, publicProjectName } from '../utils.js'
-import { t, lBasic, lEducation, lCareer, typeLabel, categoryLabel, dateLabel, resultTitle } from '../i18n_20260822-1705-UTC+0700.js'
+import { t, lBasic, lEducation, lCareer, lPartner, typeLabel, categoryLabel, dateLabel, resultTitle } from '../i18n_20260822-1705-UTC+0700.js'
 
 const counts = resultCounts()
 const roles = computed(() => lBasic('roles') || D.basic.roles)
@@ -172,6 +183,13 @@ const applicationGroups = computed(() => [
 
 const educationSummary = computed(() => D.basic.education.slice(0, 3))
 const careerSummary = computed(() => D.basic.career.slice(0, 3))
+const academicVisitNames = ['河内理工大学', '东京大学', '首尔大学', '国立台湾大学']
+const academicVisits = computed(() => academicVisitNames.map(name => D.partners.find(p => p.name === name)).filter(Boolean))
+
+const partnerExperience = partner => {
+  const [role, ...detail] = lPartner(partner, 'note').split(' · ')
+  return { role, detail: detail.join(' · ') }
+}
 
 const careerOrg = org => {
   const match = (org || '').match(/^([^（]+)（(.+)）$/)
@@ -188,6 +206,14 @@ const careerDisplay = record => {
 .exp-col-h { font-family: var(--serif); font-size: 19px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px }
 .exp-col-h .bar { width: 4px; height: 16px; border-radius: 2px; background: var(--accent) }
 .tl-context { margin-top:4px; color:var(--ink-3); font-size:13.5px; line-height:1.65 }
+.academic-visits { margin-top:30px; padding-top:26px; border-top:1px solid var(--line) }
+.academic-visits .exp-col-h { margin-bottom:14px }
+.visit-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px }
+.visit-card { min-width:0; padding:15px 16px; border:1px solid var(--line); border-radius:10px; background:linear-gradient(145deg,#fff 0%,#f7f9fb 100%) }
+.visit-time { color:var(--accent); font-size:12px; font-weight:700; letter-spacing:.02em }
+.visit-card h4 { margin:5px 0 7px; font-family:var(--serif); font-size:16px; line-height:1.4 }
+.visit-role { color:var(--ink-2); font-size:13px; font-weight:700; line-height:1.45 }
+.visit-card p { margin:4px 0 0; color:var(--ink-3); font-size:12.5px; line-height:1.5 }
 .statement, .featured, #cv-home { padding:56px 0 }
 .sec-head { margin-bottom:28px }
 .hero { padding:112px 0 48px }
@@ -232,6 +258,7 @@ const careerDisplay = record => {
 .featured-card b { font-family:var(--serif); font-size:15px; line-height:1.45 }
 .featured-card i { color:var(--accent); font-size:12px; font-style:normal }
 @media (max-width:980px) { .hero-layout { grid-template-columns:minmax(0,1fr) 270px; gap:32px } .featured-card { grid-template-columns:1fr 14px; gap:4px 8px } .featured-card span { grid-column:1 } .featured-card b { grid-column:1 } .featured-card i { grid-column:2; grid-row:1 / span 2 } }
-@media (max-width:860px) { .hero-layout { grid-template-columns:1fr } .hero-stats { grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 20px } .hero-stats .hs:last-child { grid-column:auto } .stats-label { grid-column:1 / -1 } .application-grid { grid-template-columns:1fr } .foundation-card { grid-template-columns:1fr; gap:10px } .foundation-card small { padding:10px 0 0; border-top:1px solid #ceded4; border-left:0 } }
+@media (max-width:860px) { .hero-layout { grid-template-columns:1fr } .hero-stats { grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 20px } .hero-stats .hs:last-child { grid-column:auto } .stats-label { grid-column:1 / -1 } .application-grid { grid-template-columns:1fr } .foundation-card { grid-template-columns:1fr; gap:10px } .foundation-card small { padding:10px 0 0; border-top:1px solid #ceded4; border-left:0 } .visit-grid { grid-template-columns:repeat(2,minmax(0,1fr)) } }
 @media (max-width:700px) { .hero { padding:96px 0 42px } .hero-layout { gap:28px } .hero-stats { padding:14px 16px } .hero-stats .hs { grid-template-columns:48px minmax(0,1fr); gap:7px; padding:9px 0 } .hero-stats .hs b { font-size:22px } .statement, .featured, #cv-home { padding:44px 0 } .featured-columns { grid-template-columns:1fr } .research-card { padding:20px } }
+@media (max-width:520px) { .visit-grid { grid-template-columns:1fr } }
 </style>

@@ -33,7 +33,11 @@
               <div class="card-meta">{{ lPartner(p, 'city') }}<template v-if="p.time"> · {{ dateLabel(p.time) }}</template></div>
               <h3>{{ lPartner(p, 'name') }}</h3>
               <div v-if="locale === 'zh'" class="en-name">{{ p.en }}</div>
-              <p>{{ lPartner(p, 'note') }}</p>
+              <template v-if="p.time">
+                <div class="partner-role">{{ partnerExperience(p).role }}</div>
+                <p v-if="partnerExperience(p).detail">{{ partnerExperience(p).detail }}</p>
+              </template>
+              <p v-else>{{ lPartner(p, 'note') }}</p>
             </div>
           </article>
         </div>
@@ -86,6 +90,10 @@ const logos = {
 const universities = computed(() => D.partners.filter(p => p.type === '高校'))
 const institutions = computed(() => D.partners.filter(p => p.type === '合作机构'))
 const logoFor = name => logos[name]
+const partnerExperience = partner => {
+  const [role, ...detail] = lPartner(partner, 'note').split(' · ')
+  return { role, detail: detail.join(' · ') }
+}
 </script>
 
 <style scoped>
@@ -108,6 +116,7 @@ const logoFor = name => logos[name]
 .card-meta { color:var(--ink-3); font-size:11.5px; line-height:1.4 }
 .partner-copy h3 { margin:3px 0 2px; color:var(--ink); font-family:var(--serif); font-size:16.5px; line-height:1.38 }
 .en-name { color:var(--ink-3); font-size:11.5px; line-height:1.35 }
+.partner-role { display:inline-block; margin-top:7px; padding:3px 7px; border-radius:5px; color:var(--accent); background:var(--accent-soft); font-size:11.5px; font-weight:750; line-height:1.4 }
 .partner-copy p { margin:7px 0 0; color:var(--ink-2); font-size:13px; line-height:1.5 }
 .institution-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px }
 .institution-card { display:grid; grid-template-columns:62px minmax(0,1fr); align-items:center; gap:15px; min-height:112px; padding:16px 18px; border:1px solid #cedbd4; border-radius:var(--radius); background:linear-gradient(145deg,#fff 0%,#f4f8f6 100%) }
