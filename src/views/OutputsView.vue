@@ -20,7 +20,7 @@
             <span class="ri-badge" :style="badgeStyle(r)">{{ typeLabel(r.type) }}</span>
             <div class="ri-body">
               <h4>{{ resultTitle(r) }}</h4>
-              <div class="ri-sub">{{ resultKernel(r) }}</div>
+              <div class="ri-sub">{{ outputSummary(r) }}</div>
             </div>
             <span class="ri-badge" :style="statusStyle(r)">{{ localizedStatusMeta(r.status)[0] }}</span>
             <span class="ri-go">→</span>
@@ -34,10 +34,18 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { D, typeColor, typeOrder, localizedStatusMeta, isFormalResult } from '../utils.js'
-import { t, typeLabel, resultTitle, resultKernel } from '../i18n_20260822-1705-UTC+0700.js'
+import { t, typeLabel, resultTitle, resultReference, resultKernel } from '../i18n_20260822-1705-UTC+0700.js'
 
 const activeType = ref('全部')
 const activeStatus = ref('正式')
+const referenceTypes = new Set(['期刊论文', '会议论文', '会议摘要', '数据集'])
+const typeIndex = type => {
+  const index = typeOrder.indexOf(type)
+  return index < 0 ? Number.MAX_SAFE_INTEGER : index
+}
+const outputSummary = result => referenceTypes.has(result.type)
+  ? (resultReference(result) || resultKernel(result))
+  : resultKernel(result)
 const formalCount = D.results.filter(isFormalResult).length
 const statusFilters = computed(() => [
   { v: '正式', label: `${t('outputs.formal')} ${formalCount}` },
@@ -57,7 +65,7 @@ const typeFilters = computed(() => {
 const filtered = computed(() => {
   let items = activeStatus.value === '全部' ? D.results : D.results.filter(r => activeStatus.value === '正式' ? isFormalResult(r) : !isFormalResult(r))
   if (activeType.value !== '全部') items = items.filter(r => r.type === activeType.value)
-  return items
+  return [...items].sort((a, b) => typeIndex(a.type) - typeIndex(b.type))
 })
 const badgeStyle = r => {
   const [c1, c2] = typeColor[r.type] || ['#55606e', '#f0f1f3']

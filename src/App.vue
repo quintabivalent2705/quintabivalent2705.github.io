@@ -32,8 +32,10 @@
     <div class="wrap">
       <div>© {{ year }} <b>王潇霈 Wang Xiaopei</b> · {{ t('footer.role') }}</div>
       <div class="flinks">
+        <a :href="`mailto:${D.basic.email_permanent}`">✉ {{ D.basic.email_permanent }}</a>
         <a :href="`mailto:${D.basic.email_academic}`">✉ {{ D.basic.email_academic }}</a>
         <a v-if="D.basic.orcid" :href="D.basic.orcid" target="_blank" rel="me noopener noreferrer">ORCID {{ orcidId }}</a>
+        <a v-if="D.basic.linkedin" :href="D.basic.linkedin" target="_blank" rel="me noopener noreferrer">LinkedIn</a>
         <span v-if="D.basic.location">📍 {{ basicLocation }}</span>
       </div>
     </div>

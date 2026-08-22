@@ -24,16 +24,17 @@ function requireOnlyKeys(label, value, allowed) {
   if (extras.length) throw new Error(`${label} contains fields not used by the public site: ${extras.join(', ')}`)
 }
 
-requireOnlyKeys('site-data-zh', data, ['basic', 'directions', 'projects', 'results', 'kernels', 'partners', 'stats'])
-requireOnlyKeys('site-data-zh.basic', data.basic, ['identity', 'location', 'email_academic', 'orcid', 'roles', 'education', 'career'])
+requireOnlyKeys('site-data-zh', data, ['basic', 'directions', 'projects', 'results', 'partners', 'stats'])
+requireOnlyKeys('site-data-zh.basic', data.basic, ['identity', 'location', 'email_academic', 'email_permanent', 'orcid', 'linkedin', 'roles', 'education', 'career'])
+if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.basic.email_permanent || '')) throw new Error('site-data-zh.basic.email_permanent must be a valid email address')
 if (!/^https:\/\/orcid\.org\/\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/.test(data.basic.orcid || '')) throw new Error('site-data-zh.basic.orcid must be a valid HTTPS ORCID URL')
+if (!/^https:\/\/(www\.)?linkedin\.com\/in\/[A-Za-z0-9_-]+\/?$/.test(data.basic.linkedin || '')) throw new Error('site-data-zh.basic.linkedin must be a valid public LinkedIn profile URL')
 data.basic.education.forEach((item, index) => requireOnlyKeys(`site-data-zh.basic.education[${index}]`, item, ['time', 'school', 'degree', 'advisor', 'topic']))
 data.basic.career.forEach((item, index) => requireOnlyKeys(`site-data-zh.basic.career[${index}]`, item, ['time', 'org', 'role']))
 data.directions.forEach(item => requireOnlyKeys(`direction ${item.id}`, item, ['id', 'name', 'domain', 'scope', 'core']))
 data.projects.forEach(item => requireOnlyKeys(`project ${item.id}`, item, ['id', 'name', 'category', 'time', 'client', 'role', 'tech', 'work', 'public', 'direction', 'directions', 'results']))
-data.results.forEach(item => requireOnlyKeys(`result ${item.name}`, item, ['name', 'type', 'status', 'public', 'date', 'kernel', 'role', 'projects', 'directions', 'pkg', 'publicReference']))
-data.kernels.forEach(item => requireOnlyKeys(`kernel ${item.id}`, item, ['id', 'name', 'results', 'directions', 'projectNames', 'count']))
-data.partners.forEach(item => requireOnlyKeys(`partner ${item.name}`, item, ['type', 'name', 'en', 'city', 'badge', 'color', 'note']))
+data.results.forEach(item => requireOnlyKeys(`result ${item.name}`, item, ['name', 'type', 'status', 'public', 'date', 'kernel', 'role', 'projects', 'directions', 'pkg', 'publicReference', 'publicUrl']))
+data.partners.forEach(item => requireOnlyKeys(`partner ${item.name}`, item, ['type', 'name', 'en', 'city', 'time', 'badge', 'color', 'note']))
 requireOnlyKeys('site-data-zh.stats', data.stats, ['projectTotal', 'projectEng', 'projectRnd'])
 const requiredArrays = ['directions', 'projects', 'results', 'partners']
 requiredArrays.forEach(key => {
@@ -61,6 +62,7 @@ data.projects.forEach(project => {
 
 data.results.forEach(result => {
   if (result.public !== '可公开') errors.push(`${result.name}: result is not approved for public display`)
+  if (result.publicUrl && !/^https:\/\//.test(result.publicUrl)) errors.push(`${result.name}: publicUrl must use HTTPS`)
   ;(result.projects || []).forEach(name => {
     if (!projectNames.has(name)) errors.push(`${result.name}: unknown project ${name}`)
   })
@@ -68,7 +70,7 @@ data.results.forEach(result => {
 
 const cjk = /[\u3400-\u9fff]/
 function validateOverlay(label, overlay) {
-  requireOnlyKeys(label, overlay, ['basic', 'directions', 'kernels', 'results', 'projects', 'partners'])
+  requireOnlyKeys(label, overlay, ['basic', 'directions', 'results', 'projects', 'partners'])
   requireOnlyKeys(`${label}.basic`, overlay.basic, ['identity', 'location', 'roles', 'education', 'career'])
   Object.entries(overlay.basic.education || {}).forEach(([key, value]) => requireOnlyKeys(`${label}.basic.education.${key}`, value, ['school', 'degree', 'advisor', 'topic']))
   Object.entries(overlay.basic.career || {}).forEach(([key, value]) => requireOnlyKeys(`${label}.basic.career.${key}`, value, ['org', 'context', 'role']))

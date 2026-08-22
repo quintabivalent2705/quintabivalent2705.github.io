@@ -25,12 +25,12 @@
 
         <div class="university-grid">
           <article v-for="p in universities" :key="p.name" class="university-card">
-            <div class="university-logo-frame">
+            <div class="university-logo-frame" :style="{ background: p.color }">
               <span class="logo-fallback">{{ p.badge }}</span>
               <img v-if="logoFor(p.name)" :src="logoFor(p.name)" :alt="`${lPartner(p, 'name')} ${t('partners.logoAlt')}`">
             </div>
             <div class="partner-copy">
-              <div class="card-meta">{{ lPartner(p, 'city') }}</div>
+              <div class="card-meta">{{ lPartner(p, 'city') }}<template v-if="p.time"> · {{ dateLabel(p.time) }}</template></div>
               <h3>{{ lPartner(p, 'name') }}</h3>
               <div v-if="locale === 'zh'" class="en-name">{{ p.en }}</div>
               <p>{{ lPartner(p, 'note') }}</p>
@@ -67,7 +67,7 @@
 <script setup>
 import { computed } from 'vue'
 import { D } from '../utils.js'
-import { t, locale, lPartner } from '../i18n_20260822-1705-UTC+0700.js'
+import { t, locale, lPartner, dateLabel } from '../i18n_20260822-1705-UTC+0700.js'
 
 import umLogo from '../assets/university-logos_20260810-1016-UTC+0700/um_logo_20260810-1019-UTC+0700.png'
 import utokyoLogo from '../assets/university-logos_20260810-1016-UTC+0700/utokyo_logo_20260810-1019-UTC+0700.png'
@@ -101,7 +101,7 @@ const logoFor = name => logos[name]
 .section-count.green { color:var(--green); background:var(--green-soft) }
 .university-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px }
 .university-card { display:grid; grid-template-columns:82px minmax(0,1fr); gap:13px; min-height:150px; padding:15px; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); box-shadow:0 3px 12px rgba(25,49,70,.035) }
-.university-logo-frame { position:relative; display:grid; place-items:center; width:82px; height:68px; overflow:hidden; border:1px solid #e1e6eb; border-radius:8px; background:#fff }
+.university-logo-frame { position:relative; display:grid; place-items:center; width:82px; height:68px; overflow:hidden; border:1px solid #e1e6eb; border-radius:8px; background:#fff !important }
 .university-logo-frame img { position:absolute; inset:7px; width:calc(100% - 14px); height:calc(100% - 14px); object-fit:contain; background:#fff }
 .logo-fallback { color:#8794a0; font-size:14px; font-weight:750 }
 .partner-copy { min-width:0 }
