@@ -11,6 +11,7 @@
             <div class="divider"></div>
             <div class="hero-meta">
               <a :href="`mailto:${D.basic.email_academic}`">✉ {{ D.basic.email_academic }}</a>
+              <a v-if="D.basic.orcid" :href="D.basic.orcid" target="_blank" rel="me noopener noreferrer">ORCID {{ orcidId }}</a>
               <span v-if="D.basic.location">📍 {{ basicLocation }}</span>
               <span v-if="D.basic.identity">🎓 {{ basicIdentity }}</span>
             </div>
@@ -136,6 +137,7 @@ const counts = resultCounts()
 const roles = computed(() => lBasic('roles') || D.basic.roles)
 const basicLocation = computed(() => lBasic('location') || D.basic.location)
 const basicIdentity = computed(() => lBasic('identity') || D.basic.identity)
+const orcidId = computed(() => D.basic.orcid?.replace(/^https?:\/\/orcid\.org\//, '') || '')
 
 const featuredResultNames = [
   'PSO-Based Accuracy Optimization of Parallel Mass Flow Controllers in Multi-Component Gas Mixing Systems',

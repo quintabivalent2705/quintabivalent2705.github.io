@@ -33,6 +33,7 @@
       <div>© {{ year }} <b>王潇霈 Wang Xiaopei</b> · {{ t('footer.role') }}</div>
       <div class="flinks">
         <a :href="`mailto:${D.basic.email_academic}`">✉ {{ D.basic.email_academic }}</a>
+        <a v-if="D.basic.orcid" :href="D.basic.orcid" target="_blank" rel="me noopener noreferrer">ORCID {{ orcidId }}</a>
         <span v-if="D.basic.location">📍 {{ basicLocation }}</span>
       </div>
     </div>
@@ -48,6 +49,7 @@ const year = new Date().getFullYear()
 const menuOpen = ref(false)
 const route = useRoute()
 const basicLocation = computed(() => lBasic('location') || D.basic.location)
+const orcidId = computed(() => D.basic.orcid?.replace(/^https?:\/\/orcid\.org\//, '') || '')
 const navItems = computed(() => [
   { to: '/', label: t('nav.home') },
   { to: '/directions', label: t('nav.directions') },

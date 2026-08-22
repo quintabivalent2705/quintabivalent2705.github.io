@@ -1,8 +1,9 @@
 import { computed, ref, watch } from 'vue'
 import { SITE_EN, SITE_VI } from './data.js'
 
-const savedLocale = typeof localStorage === 'undefined' ? null : localStorage.getItem('academic-site-locale')
-export const locale = ref(['zh', 'en', 'vi'].includes(savedLocale) ? savedLocale : 'zh')
+const localeStorageKey = 'academic-site-locale-v2'
+const savedLocale = typeof localStorage === 'undefined' ? null : localStorage.getItem(localeStorageKey)
+export const locale = ref(['zh', 'en', 'vi'].includes(savedLocale) ? savedLocale : 'en')
 export const isEnglish = computed(() => locale.value === 'en')
 export const isVietnamese = computed(() => locale.value === 'vi')
 export const isNonChinese = computed(() => locale.value !== 'zh')
@@ -117,12 +118,12 @@ export function t(key, params = {}) {
 }
 
 export function setLocale(next) {
-  locale.value = ['zh', 'en', 'vi'].includes(next) ? next : 'zh'
+  locale.value = ['zh', 'en', 'vi'].includes(next) ? next : 'en'
 }
 
 watch(locale, next => {
   if (typeof document !== 'undefined') document.documentElement.lang = next === 'en' ? 'en' : next === 'vi' ? 'vi' : 'zh-CN'
-  if (typeof localStorage !== 'undefined') localStorage.setItem('academic-site-locale', next)
+  if (typeof localStorage !== 'undefined') localStorage.setItem(localeStorageKey, next)
 }, { immediate: true })
 
 const activeOverlay = () => locale.value === 'en' ? SITE_EN : locale.value === 'vi' ? SITE_VI : null

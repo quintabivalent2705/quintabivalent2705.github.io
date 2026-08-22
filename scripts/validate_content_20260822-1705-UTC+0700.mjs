@@ -25,7 +25,8 @@ function requireOnlyKeys(label, value, allowed) {
 }
 
 requireOnlyKeys('site-data-zh', data, ['basic', 'directions', 'projects', 'results', 'kernels', 'partners', 'stats'])
-requireOnlyKeys('site-data-zh.basic', data.basic, ['identity', 'location', 'email_academic', 'roles', 'education', 'career'])
+requireOnlyKeys('site-data-zh.basic', data.basic, ['identity', 'location', 'email_academic', 'orcid', 'roles', 'education', 'career'])
+if (!/^https:\/\/orcid\.org\/\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/.test(data.basic.orcid || '')) throw new Error('site-data-zh.basic.orcid must be a valid HTTPS ORCID URL')
 data.basic.education.forEach((item, index) => requireOnlyKeys(`site-data-zh.basic.education[${index}]`, item, ['time', 'school', 'degree', 'advisor', 'topic']))
 data.basic.career.forEach((item, index) => requireOnlyKeys(`site-data-zh.basic.career[${index}]`, item, ['time', 'org', 'role']))
 data.directions.forEach(item => requireOnlyKeys(`direction ${item.id}`, item, ['id', 'name', 'domain', 'scope', 'core']))
