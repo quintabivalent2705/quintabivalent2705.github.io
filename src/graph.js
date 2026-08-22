@@ -1,11 +1,10 @@
 // 关系图谱引擎：自底向上五层归纳结构
 // 项目 → 成果 → 应用方向 → 共性技术 → 学术主张
-import { D, dirById, dirName, resByName, isActiveDir, publicProjectName } from './utils.js'
-import { t, lKernel, resultTitle } from './i18n_20260822-1705-UTC+0700.js'
+import { D, dirById, dirName, resByName, publicProjectName } from './utils.js'
+import { t, resultTitle } from './i18n_20260822-1705-UTC+0700.js'
 
 const GRAPH_COLORS = {
-  claim: '#5b4a8a', base: '#0e7490', direction: '#1a4b8c', result: '#9a7b3c', project: '#2f6b52',
-  kernel: '#5b4a8a' // 内核详情页（K scope）仍使用
+  claim: '#5b4a8a', base: '#0e7490', direction: '#1a4b8c', result: '#9a7b3c', project: '#2f6b52'
 }
 export const GRAPH_BASE_COLOR = GRAPH_COLORS.base
 export const GRAPH_TYPE_LABEL = { claim: '学术主张', base: '共性技术', direction: '应用方向', result: '成果', project: '项目' }
@@ -20,7 +19,7 @@ const dirAppsOf = r => {
 }
 const dirBasesOf = r => [...new Set((r.directions || []).map(x => x.split('｜')[0].trim()))].filter(x => BASE_IDS.includes(x))
 
-// 构建图数据：scope = 'all'（五层全景）| 'Dxx' | 'Pxx' | 'Rxx' | 'Kxx'（详情页局部）
+// 构建图数据：scope = 'all'（五层全景）| 'Dxx' | 'Pxx' | 'Rxx'（详情页局部）
 export function buildGraphData(scope) {
   const nodes = [], edges = [], seen = new Set(), eSet = new Set()
   const addNode = (id, label, type, route) => {
@@ -146,18 +145,6 @@ export function buildGraphData(scope) {
     ;(r.projects || []).map(n => D.projects.find(x => x.id === n)).filter(Boolean).slice(0, 6).forEach(p => {
       const pn = addNode('P:' + p.id, short(publicProjectName(p), 10), 'project', '#/project/' + p.id)
       addEdge(pn, rn)
-    })
-  } else if (scope.startsWith('K')) {
-    // 内核详情页（保留原逻辑）
-    const k = D.kernels.find(x => x.id === scope); if (!k) return { nodes: [], edges: [] }
-    const kn = addNode('K:' + k.id, short(lKernel(k), 12), 'kernel', '#/kernels/' + k.id)
-    k.directions.forEach(did => {
-      const dn = addNode('D:' + did, dirById[did] ? short(dirName(dirById[did]), 10) : did, 'direction', '#/direction/' + did)
-      addEdge(kn, dn)
-    })
-    k.results.slice(0, 8).forEach(r => {
-      const rn = addNode('R:' + r.name, short(resultTitle(r), 10), 'result', '#/result/' + encodeURIComponent(r.name))
-      addEdge(kn, rn)
     })
   }
   return { nodes, edges }

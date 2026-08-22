@@ -10,8 +10,9 @@
             <div class="focus">{{ t('home.focus') }}</div>
             <div class="divider"></div>
             <div class="hero-meta">
-              <a :href="`mailto:${D.basic.email_academic}`">✉ {{ D.basic.email_academic }}</a>
+              <a :href="`mailto:${D.basic.email_permanent}`">✉ {{ D.basic.email_permanent }}</a>
               <a v-if="D.basic.orcid" :href="D.basic.orcid" target="_blank" rel="me noopener noreferrer">ORCID {{ orcidId }}</a>
+              <a v-if="D.basic.linkedin" :href="D.basic.linkedin" target="_blank" rel="me noopener noreferrer">LinkedIn</a>
               <span v-if="D.basic.location">📍 {{ basicLocation }}</span>
               <span v-if="D.basic.identity">🎓 {{ basicIdentity }}</span>
             </div>
@@ -23,11 +24,9 @@
           <aside class="hero-stats" :aria-label="t('home.statsAria')">
             <div class="stats-label">{{ t('kicker.academicProfile') }}</div>
             <div class="hs"><b>{{ counts.publishedPapers }}</b><span>{{ t('stats.papers') }}</span></div>
-            <div class="hs"><b>{{ counts.projectTotal }}</b><span>{{ t('stats.projects') }}<small>{{ t('stats.rnd') }} {{ counts.projectRnd }} · {{ t('stats.engineering') }} {{ counts.projectEng }}</small></span></div>
-            <div class="hs"><b>{{ counts.acceptedAbstracts }}</b><span>{{ t('stats.abstracts') }}</span></div>
-            <div class="hs"><b>{{ counts.inventionPatents }}</b><span>{{ t('stats.patents') }}<small>{{ t('stats.publicAuthorized') }}</small></span></div>
-            <div class="hs"><b>{{ counts.authorizedSoftware }}</b><span>{{ t('stats.software') }}</span></div>
             <div class="hs"><b>{{ counts.publicData }}</b><span>{{ t('stats.datasets') }}</span></div>
+            <div class="hs"><b>{{ counts.grantedInventionPatents }}</b><span>{{ t('stats.grantedPatents') }}<small>{{ counts.publicInventionApplications }} {{ t('stats.publicApplications') }}</small></span></div>
+            <div class="hs"><b>{{ featuredProjects.length }}</b><span>{{ t('stats.representativeProjects') }}</span></div>
           </aside>
         </div>
       </div>
@@ -145,7 +144,7 @@ const featuredResultNames = [
   '氢燃料电池汽车运行数据',
   'Hardware-in-the-Loop Test of Motor Controller Based on FPGA'
 ]
-const featuredProjectIds = ['R5', 'R6', 'R9']
+const featuredProjectIds = ['R5', 'R6', 'R7', 'R9', 'R11']
 const featuredResults = computed(() => featuredResultNames
   .map(name => D.results.find(r => r.name === name))
   .filter(r => r && isFormalResult(r) && r.public === '可公开'))

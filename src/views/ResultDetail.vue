@@ -7,6 +7,7 @@
           <div class="kicker">{{ t('kicker.output') }} · {{ typeLabel(r.type) }} · {{ localizedStatusMeta(r.status)[0] }}</div>
           <h1 :class="{ 'long-title': resultTitle(r).length > 80 }">{{ resultTitle(r) }}</h1>
           <div v-if="resultReference(r)" class="sub" v-html="linkify(resultReference(r))"></div>
+          <a v-if="r.publicUrl" class="resource-link" :href="r.publicUrl" target="_blank" rel="noopener noreferrer">{{ t('result.openResource') }} ↗</a>
           <div class="meta-row">
             <span v-if="r.kernel">{{ t('result.method') }} <b>{{ resultKernel(r) }}</b></span>
             <span v-if="dirs.length">{{ t('result.directions') }} <b>{{ dirs.map(did => dirById[did] ? dirName(dirById[did]) : did).join(' · ') }}</b></span>
@@ -64,6 +65,8 @@ const projects = computed(() => (r.value?.projects || []).map(n => projByName[n]
 
 <style scoped>
 .page-head h1.long-title { font-size: 32px; line-height: 1.42 }
+.resource-link { display:inline-flex; align-items:center; margin-top:14px; padding:8px 12px; border:1px solid var(--accent); border-radius:7px; color:var(--accent); background:var(--accent-soft); font-size:13px; font-weight:700; text-decoration:none }
+.resource-link:hover { background:var(--accent); color:#fff }
 @media (max-width: 720px) {
   .page-head h1.long-title { font-size: 27px; line-height: 1.45 }
 }

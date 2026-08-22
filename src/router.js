@@ -7,7 +7,6 @@ import PartnersView from './views/PartnersView.vue'
 import DirectionDetail from './views/DirectionDetail.vue'
 import ProjectDetail from './views/ProjectDetail.vue'
 import ResultDetail from './views/ResultDetail.vue'
-import KernelDetail from './views/KernelDetail.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -19,7 +18,6 @@ const router = createRouter({
     { path: '/project/:id', component: ProjectDetail, meta: { titleKey: 'page.projectDetail' } },
     { path: '/outputs', component: OutputsView, meta: { titleKey: 'page.outputs' } },
     { path: '/result/:name', component: ResultDetail, meta: { titleKey: 'page.outputDetail' } },
-    { path: '/kernels/:id', component: KernelDetail, meta: { titleKey: 'page.kernel' } },
     { path: '/partners', component: PartnersView, meta: { titleKey: 'page.partners' } },
     // 兼容旧路由
     { path: '/graph', redirect: '/directions' },

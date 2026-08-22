@@ -68,7 +68,7 @@ export const typeColor = {
   '数据集': ['#2f6b52', '#eef4f0'], '标准': ['#8c4a2f', '#f7efe9'],
   '教材': ['#3a6b52', '#eef4f0'], '软件著作权': ['#2f6b52', '#eef4f0']
 }
-export const typeOrder = ['期刊论文', '会议论文', '会议摘要', '发明专利', '实用新型专利', '软件著作权', '数据集', '技术报告', '标准', '教材']
+export const typeOrder = ['期刊论文', '会议论文', '会议摘要', '数据集', '发明专利', '实用新型专利', '软件著作权', '技术报告', '标准', '教材']
 
 export const statusMeta = s => s.includes('发表') ? ['已公开', '#2f6b52', '#eef4f0']
   : s.includes('授权') ? ['已授权', '#1a4b8c', '#eef3f9']
@@ -107,6 +107,8 @@ export function resultCounts() {
     publishedPapers: count('期刊论文', /发表|公开/) + count('会议论文', /发表|公开/),
     acceptedAbstracts: count('会议摘要', /录用|发表|公开/),
     inventionPatents: count('发明专利'),
+    grantedInventionPatents: count('发明专利', /授权/),
+    publicInventionApplications: D.results.filter(r => r.type === '发明专利' && /发表|公开|申请/.test(r.status || '') && !/授权/.test(r.status || '')).length,
     utilityPatents: count('实用新型专利'),
     authorizedSoftware: count('软件著作权', /授权/),
     publicData: count('数据集', /发表|公开/),
